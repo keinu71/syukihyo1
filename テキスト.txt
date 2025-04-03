@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>周期表テストカード</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr); /* 8列 */
+            grid-template-rows: repeat(4, 1fr); /* 4行 */
+            gap: 5px;
+            width: 90vw;
+            height: 90vh;
+        }
+        .card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border: 2px solid #333;
+            text-align: center;
+            font-size: 1.2em;
+            width: 100%; 
+            height: 100%; 
+            cursor: pointer;
+            user-select: none;
+            padding: 5px;
+            box-sizing: border-box;
+        }
+        .card:hover {
+            background: #ddd;
+        }
+        .question {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        .answer {
+            font-size: 1em;
+            color: #333;
+            margin-top: 10px;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+        .card.show-answer .answer {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container"></div>
+
+    <script>
+        const elements = [
+            { num: 1,  symbol: "H",  name: "水素",      kana: "すいそ",      group: 1, period: 1 },
+            { num: 2,  symbol: "He", name: "ヘリウム",  kana: "へりうむ",  group: 18, period: 1 },
+            { num: 3,  symbol: "Li", name: "リチウム",  kana: "りちうむ",  group: 1, period: 2 },
+            { num: 4,  symbol: "Be", name: "ベリリウム", kana: "べりりうむ", group: 2, period: 2 },
+            { num: 5,  symbol: "B",  name: "ホウ素",    kana: "ほうそ",    group: 13, period: 2 },
+            { num: 6,  symbol: "C",  name: "炭素",      kana: "たんそ",      group: 14, period: 2 },
+            { num: 7,  symbol: "N",  name: "窒素",      kana: "ちっそ",      group: 15, period: 2 },
+            { num: 8,  symbol: "O",  name: "酸素",      kana: "さんそ",      group: 16, period: 2 },
+            { num: 9,  symbol: "F",  name: "フッ素",    kana: "ふっそ",    group: 17, period: 2 },
+            { num: 10, symbol: "Ne", name: "ネオン",    kana: "ねおん",    group: 18, period: 2 },
+            { num: 11, symbol: "Na", name: "ナトリウム", kana: "なとりうむ", group: 1, period: 3 },
+            { num: 12, symbol: "Mg", name: "マグネシウム", kana: "まぐねしうむ", group: 2, period: 3 },
+            { num: 13, symbol: "Al", name: "アルミニウム", kana: "あるみにうむ", group: 13, period: 3 },
+            { num: 14, symbol: "Si", name: "ケイ素",    kana: "けいそ",    group: 14, period: 3 },
+            { num: 15, symbol: "P",  name: "リン",      kana: "りん",      group: 15, period: 3 },
+            { num: 16, symbol: "S",  name: "硫黄",      kana: "いおう",      group: 16, period: 3 },
+            { num: 17, symbol: "Cl", name: "塩素",      kana: "えんそ",      group: 17, period: 3 },
+            { num: 18, symbol: "Ar", name: "アルゴン",  kana: "あるごん",  group: 18, period: 3 },
+            { num: 19, symbol: "K",  name: "カリウム",  kana: "かりうむ",  group: 1, period: 4 },
+            { num: 20, symbol: "Ca", name: "カルシウム", kana: "かるしうむ", group: 2, period: 4 },
+        ];
+
+        const container = document.querySelector('.container');
+
+        function createCard(element) {
+            const card = document.createElement('div');
+            card.classList.add('card');
+            card.style.gridColumn = element.group; // 族（列位置）
+            card.style.gridRow = element.period; // 周期（行位置）
+            card.innerHTML = `
+                <div class="question">${element.num}</div>
+                <div class="answer">
+                    <ruby>${element.name}<rt>${element.kana}</rt></ruby> (${element.symbol})
+                </div>
+            `;
+
+            let timeoutId;
+
+            card.addEventListener('click', () => {
+                card.classList.add('show-answer');
+                clearTimeout(timeoutId);
+                timeoutId = setTimeout(() => {
+                    card.classList.remove('show-answer');
+                }, 3000);
+            });
+
+            return card;
+        }
+
+        elements.forEach(element => {
+            container.appendChild(createCard(element));
+        });
+    </script>
+</body>
+</html>
